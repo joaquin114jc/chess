@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajedrez Web</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <main class="panel">
+    <header class="encabezado">
+      <div>
+        <h1>Ajedrez Local</h1>
+        <p class="subtitulo">Estilo Chess.com con tablero clásico y juego local.</p>
+      </div>
+      <div class="botones-encabezado">
+        <button id="nuevo-juego" type="button">Nuevo juego</button>
+        <button id="partida-rapida" type="button">Partida rápida</button>
+        <button id="deshacer" type="button">Deshacer</button>
+        <button id="rehacer" type="button">Rehacer</button>
+        <button id="girar-tablero" type="button">Girar tablero</button>
+        <button id="cambiar-tema" type="button" class="boton-secundario">Modo oscuro</button>
+      </div>
+    </header>
+
+    <section class="estado">
+      <div>
+        <span id="info" aria-live="polite">Turno de las Blancas</span>
+        <span class="modo">Blancas vs Negras</span>
+        <span id="evaluacion" class="evaluacion" aria-live="polite"></span>
+        <span id="material-diferencia" class="material"></span>
+        <span id="estado-ia" class="estado-ia" aria-live="polite"></span>
+      </div>
+      <div class="relojes">
+        <div class="reloj-card">
+          <span>Blancas</span>
+          <strong id="reloj-blancas">05:00</strong>
+        </div>
+        <div class="reloj-card">
+          <span>Negras</span>
+          <strong id="reloj-negras">05:00</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="controles">
+      <label>
+        Color:
+        <select id="color-seleccion">
+          <option value="w">Blancas</option>
+          <option value="b">Negras</option>
+        </select>
+      </label>
+      <label>
+        Tiempo:
+        <select id="control-tiempo">
+          <option value="0">Sin tiempo</option>
+          <option value="5" selected>5 min</option>
+          <option value="10">10 min</option>
+          <option value="15">15 min</option>
+        </select>
+      </label>
+      <label>
+        Tema tablero:
+        <select id="tema-piezas">
+          <option value="clasico">Clásico</option>
+          <option value="moderno">Moderno</option>
+          <option value="madera">Madera</option>
+          <option value="azul">Azul</option>
+        </select>
+      </label>
+      <label>
+        Skin piezas:
+        <select id="skin-piezas">
+          <option value="clasico" selected>Clásico</option>
+          <option value="metal">Metal</option>
+          <option value="sombra">Sombra</option>
+        </select>
+      </label>
+      <label>
+        Dificultad IA:
+        <select id="dificultad-ia">
+          <option value="1">Fácil</option>
+          <option value="2" selected>Normal</option>
+          <option value="3">Difícil</option>
+        </select>
+      </label>
+      <label>
+        Modo rápido:
+        <select id="modo-rapido">
+          <option value="casual">Partida rápida</option>
+          <option value="clasico" selected>Clásica</option>
+          <option value="intenso">Intenso</option>
+        </select>
+      </label>
+      <label>
+        Profundidad IA:
+        <select id="profundidad-ia">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </label>
+      <label class="switch">
+        <input id="modo-dos-jugadores" type="checkbox">
+        <span>2 jugadores</span>
+      </label>
+      <label class="switch">
+        <input id="modo-red" type="checkbox">
+        <span>Red</span>
+      </label>
+      <label class="switch">
+        <input id="sonido-activo" type="checkbox" checked>
+        <span>Sonido</span>
+      </label>
+    </section>
+    <div class="contenido">
+      <div class="tablero-area">
+        <div id="tablero" aria-label="Tablero de ajedrez" aria-describedby="tablero-instrucciones" tabindex="0" role="grid"></div>
+        <p id="tablero-instrucciones" class="sr-only">Use las flechas del teclado para mover el foco en el tablero, Enter o Espacio para seleccionar y mover piezas, Escape para cancelar la selección.</p>
+      </div>
+      <aside class="historial-panel">
+        <div class="historial-header">
+          <h2>Historial</h2>
+          <span id="contador-jugadas">0 jugadas</span>
+        </div>
+        <div class="resumen-partidas">
+          <div class="stats-grid">
+            <div><strong id="stats-victorias">0</strong><span>Victorias</span></div>
+            <div><strong id="stats-derrotas">0</strong><span>Derrotas</span></div>
+            <div><strong id="stats-tablas">0</strong><span>Tablas</span></div>
+          </div>
+          <div class="acciones-historial">
+            <button id="guardar-partida" type="button">Guardar</button>
+            <button id="cargar-partida" type="button">Cargar</button>
+            <button id="borrar-guardado" type="button">Borrar</button>
+            <button id="exportar-historial" type="button">Exportar</button>
+            <button id="exportar-pgn" type="button">Exportar PGN</button>
+            <button id="importar-pgn" type="button">Importar PGN</button>
+            <button id="guardar-servidor" type="button">Guardar servidor</button>
+            <button id="cargar-servidor" type="button">Cargar servidor</button>
+            <button id="borrar-servidor" type="button">Borrar servidor</button>
+          </div>
+          <label class="guardar-slot">
+            Guardado:
+            <select id="lista-partidas"></select>
+          </label>
+          <label class="guardar-slot">
+            Guardado servidor:
+            <select id="lista-partidas-servidor"></select>
+          </label>
+          <p id="estado-backend" class="estado-guardado" aria-live="polite">Buscando backend...</p>
+          <p id="estado-guardado" class="estado-guardado" aria-live="polite">Sin partida guardada</p>
+        </div>
+        <div class="panel-entrenamiento">
+          <h3>Entrenamiento</h3>
+          <p id="puzzle-titulo" class="puzzle-titulo">Mate en 1</p>
+          <p id="puzzle-descripcion" class="puzzle-descripcion">Encuentra el jaque mate en una jugada.</p>
+          <button id="reiniciar-puzzle" type="button">Nuevo reto</button>
+          <p id="puzzle-pista" class="puzzle-pista">Pista: busca la amenaza inmediata.</p>
+          <p id="puzzle-feedback" class="puzzle-feedback" aria-live="polite">Prueba a resolverlo.</p>
+          <div class="puzzle-stats">
+            <span id="puzzle-aciertos">0 aciertos</span>
+            <span id="puzzle-errores">0 errores</span>
+          </div>
+        </div>
+        <div class="panel-red">
+          <h3>Juego remoto</h3>
+          <div class="acciones-red">
+            <button id="crear-oferta" type="button">Crear oferta</button>
+            <button id="procesar-respuesta" type="button">Procesar respuesta</button>
+            <button id="procesar-oferta" type="button">Procesar oferta</button>
+          </div>
+          <label for="senal-remota">Oferta o respuesta remota</label>
+          <textarea id="senal-remota" rows="4" placeholder="Pega aquí la oferta o respuesta"></textarea>
+          <p id="estado-red" class="estado-guardado" aria-live="polite">No conectado</p>
+        </div>
+        <div class="instrucciones-panel">
+          <h3>Atajos y accesibilidad</h3>
+          <ul>
+            <li>Flechas para mover el foco por el tablero.</li>
+            <li>Enter/Espacio para seleccionar y mover piezas.</li>
+            <li>Escape para cancelar selección.</li>
+            <li>Usa el modo Red para juego P2P con intercambio manual de oferta/respuesta.</li>
+          </ul>
+        </div>
+        <ol id="historial"></ol>
+      </aside>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
