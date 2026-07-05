@@ -1,44 +1,60 @@
 # Chess Local Web
 
-Proyecto de ajedrez local con soporte de navegador, ahora con scaffolding para TypeScript y servidor Python.
+Proyecto de ajedrez para uso local en el navegador. Incluye frontend TypeScript, servidor estático simple en Python y un ejemplo de backend en C#.
 
-## Cómo usar
+## Requisitos
 
-1. Instala dependencias de TypeScript:
+- Node.js + npm (para build y tests)
+- Python 3 (para `server.py`)
+- .NET 8 SDK (opcional: para `csharp-backend`)
+
+## Instalación
+
+1. Instala dependencias:
 
 ```bash
 npm install
 ```
 
-2. Compila el proyecto:
+2. Compila el proyecto (genera `dist/`):
 
 ```bash
 npm run build
 ```
 
-3. Inicia el servidor local de Python:
+3. Inicia el servidor local (sirve `chess.html` y la API de guardado):
 
 ```bash
 npm start
 ```
 
-4. Abre en el navegador:
+Abre en tu navegador: http://localhost:8000
 
-```text
-http://localhost:8000
+## Tests
+
+Ejecuta los tests unitarios con Vitest:
+
+```bash
+npm test
 ```
 
-## Qué se agregó
+## Desarrollo
 
-- `package.json` con `typescript` y scripts de build.
-- `tsconfig.json` para compilar `src/script.ts` a `dist/script.js`.
-- `server.py` para servir los archivos estáticos y agregar una API REST simple de guardado de partidas.
-- `csharp-backend/` con un backend ASP.NET Core para guardar, cargar y listar partidas.
-- `.gitignore` para ignorar `dist/`, `node_modules/` y cachés de Python.
+- Usa `npm run watch` para recompilar TypeScript automáticamente durante el desarrollo.
+- Archivos principales:
+	- `src/script.ts` — código TypeScript del frontend
+	- `chess.html`, `estilo.css`, `aiWorker.js` — recursos estáticos
+	- `server.py` — servidor estático + API para guardar/leer partidas
 
-## Notas
+## Build/Release rápido
 
-- El archivo de código fuente principal ahora está en `src/script.ts`.
-- `chess.html` carga `dist/script.js` tras la compilación.
-- Puedes usar `npm run watch` para recompilar mientras editas.
-- El backend C# está disponible en `csharp-backend/` y requiere el SDK de .NET 8 para ejecutarse.
+1. Asegúrate de que los tests pasan: `npm test`
+2. Ejecuta `npm run build` para generar `dist/` (ya contiene `script.js`, `chess.html` y `estilo.css`).
+3. Empaqueta o sube `dist/` según tu flujo de publicación.
+
+## Notas adicionales
+
+- El directorio `csharp-backend/` contiene un ejemplo de backend en ASP.NET Core para integrar almacenamiento de partidas (requiere .NET 8 para ejecutar).
+- El almacenamiento local de partidas se guarda en `saved_games.json` cuando usas la API de `server.py`.
+
+Si quieres, puedo también añadir un changelog y un script de release automático.

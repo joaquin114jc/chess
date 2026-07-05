@@ -42,7 +42,9 @@ const botonCrearOferta = document.getElementById('crear-oferta') as HTMLButtonEl
 const botonProcesarOferta = document.getElementById('procesar-oferta') as HTMLButtonElement;
 const botonProcesarRespuesta = document.getElementById('procesar-respuesta') as HTMLButtonElement;
 const listaPartidas = document.getElementById('lista-partidas') as HTMLSelectElement;
-const listaPartidasServidor = document.getElementById('lista-partidas-servidor') as HTMLSelectElement;
+const listaPartidasServidor = document.getElementById(
+  'lista-partidas-servidor'
+) as HTMLSelectElement;
 const senalRemota = document.getElementById('senal-remota') as HTMLTextAreaElement;
 const estadoBackendEl = document.getElementById('estado-backend') as HTMLElement;
 const estadoRedEl = document.getElementById('estado-red') as HTMLElement;
@@ -62,7 +64,7 @@ const simbolosPiezas = {
     n: { w: '♘', b: '♞' },
     b: { w: '♗', b: '♝' },
     q: { w: '♕', b: '♛' },
-    k: { w: '♔', b: '♚' }
+    k: { w: '♔', b: '♚' },
   },
   moderno: {
     p: { w: '♟', b: '♙' },
@@ -70,8 +72,8 @@ const simbolosPiezas = {
     n: { w: '♞', b: '♘' },
     b: { w: '♝', b: '♗' },
     q: { w: '♛', b: '♕' },
-    k: { w: '♚', b: '♔' }
-  }
+    k: { w: '♚', b: '♔' },
+  },
 };
 
 const juego = new Chess();
@@ -199,7 +201,7 @@ async function guardarPartidaServidor() {
     modoRed,
     ultimaMovidaDesde,
     ultimaMovidaHasta,
-    turn: juego.turn()
+    turn: juego.turn(),
   };
 
   const url = await obtenerBackendUrl();
@@ -212,7 +214,7 @@ async function guardarPartidaServidor() {
     const respuesta = await fetch(`${url}/api/save`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: nombre, state: estado })
+      body: JSON.stringify({ name: nombre, state: estado }),
     });
 
     if (!respuesta.ok) {
@@ -306,7 +308,7 @@ async function borrarPartidaServidor() {
 
   try {
     const respuesta = await fetch(`${url}/api/games/${encodeURIComponent(nombre)}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
     if (!respuesta.ok) {
       throw new Error('No se pudo borrar la partida del servidor');
@@ -426,7 +428,7 @@ function reproducirSonido(tipo: string) {
       movimiento: { tipo: 'sine', frecuencia: 300, frecuencia2: 420, duracion: 0.12 },
       captura: { tipo: 'square', frecuencia: 440, frecuencia2: 560, duracion: 0.16 },
       check: { tipo: 'triangle', frecuencia: 520, frecuencia2: 640, duracion: 0.14 },
-      checkmate: { tipo: 'sawtooth', frecuencia: 260, frecuencia2: 340, duracion: 0.22 }
+      checkmate: { tipo: 'sawtooth', frecuencia: 260, frecuencia2: 340, duracion: 0.22 },
     };
     const opcion = config[tipo] || config.movimiento;
     oscilador.type = opcion.tipo;
@@ -496,9 +498,10 @@ function registrarResultado() {
 
 function exportarHistorial() {
   const historialMovidas = juego.history();
-  const texto = historialMovidas.length > 0
-    ? `Partida de ajedrez\n\n${historialMovidas.join(' ')}`
-    : 'Partida de ajedrez\n\nSin movimientos todavía.';
+  const texto =
+    historialMovidas.length > 0
+      ? `Partida de ajedrez\n\n${historialMovidas.join(' ')}`
+      : 'Partida de ajedrez\n\nSin movimientos todavía.';
   const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const enlace = document.createElement('a');
@@ -527,7 +530,7 @@ function guardarEstadoLocal() {
       modoRed,
       ultimaMovidaDesde,
       ultimaMovidaHasta,
-      turn: juego.turn()
+      turn: juego.turn(),
     };
     localStorage.setItem('ajedrez-local-guardado', JSON.stringify(estado));
     estadoGuardadoEl.textContent = 'Partida guardada automáticamente';
@@ -578,8 +581,12 @@ function actualizarListaPartidas() {
 }
 
 function guardarPartidaHistorial() {
-  const nombreExistente = listaPartidas.value && savedGames[listaPartidas.value] ? listaPartidas.value : null;
-  const nombre = prompt('Nombre para guardar esta partida:', nombreExistente || `Partida ${new Date().toLocaleString()}`);
+  const nombreExistente =
+    listaPartidas.value && savedGames[listaPartidas.value] ? listaPartidas.value : null;
+  const nombre = prompt(
+    'Nombre para guardar esta partida:',
+    nombreExistente || `Partida ${new Date().toLocaleString()}`
+  );
   if (!nombre) return;
 
   const estado = {
@@ -598,7 +605,7 @@ function guardarPartidaHistorial() {
     modoRed,
     ultimaMovidaDesde,
     ultimaMovidaHasta,
-    turn: juego.turn()
+    turn: juego.turn(),
   };
 
   savedGames[nombre] = estado;
@@ -771,7 +778,8 @@ async function procesarRespuesta() {
   try {
     const respuesta = JSON.parse(senalRemota.value);
     await peerConnection!.setRemoteDescription(respuesta);
-    estadoRedEl.textContent = 'Respuesta procesada. Conexión activada cuando el canal esté abierto.';
+    estadoRedEl.textContent =
+      'Respuesta procesada. Conexión activada cuando el canal esté abierto.';
   } catch (error) {
     console.warn('No se pudo procesar la respuesta', error);
     estadoRedEl.textContent = 'Error al procesar la respuesta.';
@@ -1013,7 +1021,9 @@ function renderizarTablero() {
       if (fila === 7) {
         const etiquetaColumna = document.createElement('span');
         etiquetaColumna.className = 'etiqueta-columna';
-        etiquetaColumna.textContent = boardFlipped ? String.fromCharCode(97 + (7 - columna)) : String.fromCharCode(97 + columna);
+        etiquetaColumna.textContent = boardFlipped
+          ? String.fromCharCode(97 + (7 - columna))
+          : String.fromCharCode(97 + columna);
         casillaDiv.appendChild(etiquetaColumna);
       }
 
@@ -1028,12 +1038,24 @@ function renderizarTablero() {
         const piezaDiv = document.createElement('div');
         piezaDiv.className = `pieza ${tema === 'moderno' ? 'pieza-moderna' : ''} skin-${skinPiezas}`;
         piezaDiv.textContent = simbolosPiezas[tema][pieza.type][pieza.color];
-        piezaDiv.draggable = pieza.color === playerColor && juego.turn() === playerColor && !juego.game_over() && !finPorTiempo;
+        piezaDiv.draggable =
+          pieza.color === playerColor &&
+          juego.turn() === playerColor &&
+          !juego.game_over() &&
+          !finPorTiempo;
 
         piezaDiv.addEventListener('dragstart', (evento) => {
-          if (juego.game_over() || finPorTiempo || pieza.color !== playerColor || juego.turn() !== playerColor) return;
+          if (
+            juego.game_over() ||
+            finPorTiempo ||
+            pieza.color !== playerColor ||
+            juego.turn() !== playerColor
+          )
+            return;
           casillaSeleccionada = casilla;
-          movimientosLegales = juego.moves({ square: casilla, verbose: true }).map((mov: any) => mov.to);
+          movimientosLegales = juego
+            .moves({ square: casilla, verbose: true })
+            .map((mov: any) => mov.to);
           renderizarTablero();
           evento.dataTransfer?.setData('text/plain', casilla);
           if (evento.dataTransfer) evento.dataTransfer.effectAllowed = 'move';
@@ -1077,7 +1099,9 @@ function turnoHumano() {
 }
 
 function seleccionarPromocion(origen: string, destino: string) {
-  const movimientos = juego.moves({ square: origen, verbose: true }).filter((mov: any) => mov.to === destino && mov.flags.includes('p'));
+  const movimientos = juego
+    .moves({ square: origen, verbose: true })
+    .filter((mov: any) => mov.to === destino && mov.flags.includes('p'));
   if (movimientos.length === 0) return 'q';
   const opcion = prompt('Promoción: q = dama, r = torre, b = alfil, n = caballo', 'q');
   if (!opcion) return 'q';
@@ -1113,7 +1137,7 @@ function manejarClick(casilla: string) {
 
 function handleKeyboard(evento: KeyboardEvent) {
   const tecla = evento.key;
-  const letras = ['a','b','c','d','e','f','g','h'];
+  const letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   const file = focusSquare[0];
   const rank = Number(focusSquare[1]);
   let nuevaCasilla = focusSquare;
@@ -1144,7 +1168,9 @@ function handleKeyboard(evento: KeyboardEvent) {
 
     if (puedeMoverPieza(pieza)) {
       casillaSeleccionada = focusSquare;
-      movimientosLegales = juego.moves({ square: focusSquare, verbose: true }).map((mov: any) => mov.to);
+      movimientosLegales = juego
+        .moves({ square: focusSquare, verbose: true })
+        .map((mov: any) => mov.to);
       renderizarTablero();
       return;
     }
@@ -1190,11 +1216,18 @@ function intentarMovimiento(origen: string | null, destino: string) {
       reproducirSonido('checkmate');
     }
     renderizarTablero();
-guardarEstadoLocalConRetraso();
+    guardarEstadoLocalConRetraso();
     actualizarEstado();
 
     if (modoRed && conexionActiva && canalDatos?.readyState === 'open') {
-      canalDatos.send(JSON.stringify({ type: 'move', from: origen, to: destino, promotion: movimiento.promotion || promocion }));
+      canalDatos.send(
+        JSON.stringify({
+          type: 'move',
+          from: origen,
+          to: destino,
+          promotion: movimiento.promotion || promocion,
+        })
+      );
     }
 
     if (!juego.game_over() && !finPorTiempo && !modoDosJugadores && !modoRed) {
@@ -1218,7 +1251,7 @@ function evaluarTablero(tablero: any, jugadorActual: string) {
       [0.0, 0.0, 0.0, 0.2, 0.2, 0.0, 0.0, 0.0],
       [0.05, -0.05, -0.1, 0.0, 0.0, -0.1, -0.05, 0.05],
       [0.05, 0.1, 0.1, -0.2, -0.2, 0.1, 0.1, 0.05],
-      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
     ],
     n: [
       [-0.5, -0.4, -0.3, -0.3, -0.3, -0.3, -0.4, -0.5],
@@ -1228,7 +1261,7 @@ function evaluarTablero(tablero: any, jugadorActual: string) {
       [-0.3, 0.0, 0.15, 0.2, 0.2, 0.15, 0.0, -0.3],
       [-0.3, 0.05, 0.1, 0.15, 0.15, 0.1, 0.05, -0.3],
       [-0.4, -0.2, 0.0, 0.05, 0.05, 0.0, -0.2, -0.4],
-      [-0.5, -0.4, -0.3, -0.3, -0.3, -0.3, -0.4, -0.5]
+      [-0.5, -0.4, -0.3, -0.3, -0.3, -0.3, -0.4, -0.5],
     ],
     b: [
       [-0.2, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.2],
@@ -1238,7 +1271,7 @@ function evaluarTablero(tablero: any, jugadorActual: string) {
       [-0.1, 0.0, 0.1, 0.2, 0.2, 0.1, 0.0, -0.1],
       [-0.1, 0.0, 0.1, 0.1, 0.1, 0.1, 0.0, -0.1],
       [-0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.1],
-      [-0.2, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.2]
+      [-0.2, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.2],
     ],
     r: [
       [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -1248,7 +1281,7 @@ function evaluarTablero(tablero: any, jugadorActual: string) {
       [-0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.05],
       [-0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.05],
       [-0.05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.05],
-      [0.0, 0.0, 0.0, 0.05, 0.05, 0.0, 0.0, 0.0]
+      [0.0, 0.0, 0.0, 0.05, 0.05, 0.0, 0.0, 0.0],
     ],
     q: [
       [-0.2, -0.1, -0.1, -0.05, -0.05, -0.1, -0.1, -0.2],
@@ -1258,7 +1291,7 @@ function evaluarTablero(tablero: any, jugadorActual: string) {
       [0.0, 0.0, 0.05, 0.05, 0.05, 0.05, 0.0, -0.05],
       [-0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.0, -0.1],
       [-0.1, 0.0, 0.05, 0.0, 0.0, 0.0, 0.0, -0.1],
-      [-0.2, -0.1, -0.1, -0.05, -0.05, -0.1, -0.1, -0.2]
+      [-0.2, -0.1, -0.1, -0.05, -0.05, -0.1, -0.1, -0.2],
     ],
     k: [
       [-0.3, -0.4, -0.4, -0.5, -0.5, -0.4, -0.4, -0.3],
@@ -1268,8 +1301,8 @@ function evaluarTablero(tablero: any, jugadorActual: string) {
       [-0.2, -0.3, -0.3, -0.4, -0.4, -0.3, -0.3, -0.2],
       [-0.1, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.1],
       [0.2, 0.2, 0.0, 0.0, 0.0, 0.0, 0.2, 0.2],
-      [0.2, 0.3, 0.1, 0.0, 0.0, 0.1, 0.3, 0.2]
-    ]
+      [0.2, 0.3, 0.1, 0.0, 0.0, 0.1, 0.3, 0.2],
+    ],
   };
 
   let puntuacion = 0;
@@ -1361,7 +1394,10 @@ function elegirMejorMovimiento() {
     const puntuacion = minimax(profundidadIA - 1, -Infinity, Infinity);
     juego.undo();
 
-    if ((aiColor === 'w' && puntuacion > mejorPuntuacion) || (aiColor === 'b' && puntuacion < mejorPuntuacion)) {
+    if (
+      (aiColor === 'w' && puntuacion > mejorPuntuacion) ||
+      (aiColor === 'b' && puntuacion < mejorPuntuacion)
+    ) {
       mejorPuntuacion = puntuacion;
       mejorMovimiento = mov;
     }
@@ -1427,7 +1463,11 @@ function rehacerMovimiento() {
   const movimiento = redoStack.pop();
   if (!movimiento) return;
 
-  const movimientoRehecho = juego.move({ from: movimiento.from, to: movimiento.to, promotion: movimiento.promotion || 'q' });
+  const movimientoRehecho = juego.move({
+    from: movimiento.from,
+    to: movimiento.to,
+    promotion: movimiento.promotion || 'q',
+  });
   if (movimientoRehecho) {
     ultimaMovidaDesde = movimiento.from;
     ultimaMovidaHasta = movimiento.to;

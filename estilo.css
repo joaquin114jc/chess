@@ -32,7 +32,8 @@ body.dark-theme {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   min-height: 100vh;
 }
@@ -42,10 +43,14 @@ body {
   align-items: flex-start;
   justify-content: center;
   padding: 20px;
-  background: radial-gradient(circle at top, rgba(52, 119, 219, 0.16), transparent 32%), linear-gradient(135deg, var(--fondo) 0%, #b9b0a0 100%);
+  background:
+    radial-gradient(circle at top, rgba(52, 119, 219, 0.16), transparent 32%),
+    linear-gradient(135deg, var(--fondo) 0%, #b9b0a0 100%);
   color: var(--texto);
-  font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  transition: background 220ms ease, color 220ms ease;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition:
+    background 220ms ease,
+    color 220ms ease;
 }
 
 .panel {
@@ -87,13 +92,13 @@ body {
   width: 100%;
   gap: 14px;
   padding: 16px 20px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.15));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.15));
   border: 1px solid var(--borde-suave);
   border-radius: 16px;
 }
 
 body.dark-theme .estado {
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
 }
 
 .botones-encabezado {
@@ -114,7 +119,9 @@ body.dark-theme .estado {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(52, 119, 219, 0.2);
-  transition: transform 140ms ease, box-shadow 140ms ease;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease;
 }
 
 .botones-encabezado button:hover,
@@ -182,7 +189,9 @@ body.dark-theme .estado {
   overflow: hidden;
   border: 10px solid #d6bd91;
   background: linear-gradient(180deg, #e7d2b3 0%, #d0a96c 100%);
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2), 0 18px 36px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+    0 18px 36px rgba(0, 0, 0, 0.2);
 }
 
 .casilla {
@@ -251,12 +260,12 @@ body.dark-theme .estado {
   align-items: center;
   padding: 10px 12px;
   border-radius: 12px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--borde-suave);
 }
 
 body.dark-theme #historial li {
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .jugada-num {
@@ -280,8 +289,12 @@ body.dark-theme #historial li {
   border-radius: 999px;
 }
 
-.clara { background-color: var(--clara); }
-.oscura { background-color: var(--oscura); }
+.clara {
+  background-color: var(--clara);
+}
+.oscura {
+  background-color: var(--oscura);
+}
 
 .casilla.ultima-movida {
   box-shadow: inset 0 0 0 2px rgba(52, 119, 219, 0.9);
@@ -292,7 +305,7 @@ body.dark-theme #historial li {
 }
 
 .casilla.movimiento-posible::after {
-  content: "";
+  content: '';
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -305,16 +318,24 @@ body.dark-theme #historial li {
 }
 
 @keyframes resaltar-mov {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.97); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .pieza {
   font-size: clamp(2rem, 5.6vw, 3.5rem);
   cursor: grab;
   filter: drop-shadow(0 4px 9px rgba(0, 0, 0, 0.18));
-  transition: transform 160ms ease, filter 140ms ease;
+  transition:
+    transform 160ms ease,
+    filter 140ms ease;
 }
 
 .pieza:hover {
@@ -331,8 +352,9 @@ body.dark-theme #historial li {
 
 .pieza.skin-metal {
   color: white;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
-  background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.55), transparent 35%),
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.55), transparent 35%),
     linear-gradient(135deg, #d4d4d4 0%, #9c9c9c 50%, #747474 100%);
   border-radius: 50%;
   padding: 6px;

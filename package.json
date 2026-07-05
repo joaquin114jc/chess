@@ -1,17 +1,42 @@
 {
   "name": "chess-local-web",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
+  "description": "A local web-based chess board with TypeScript frontend and simple save API",
+  "main": "dist/script.js",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "build": "node scripts/build.js",
     "watch": "tsc -w",
     "start": "python server.py",
     "test": "vitest --run",
-    "ci": "npm run build && npm test"
+    "ci": "npm run build && npm test",
+    "lint": "eslint \"src/**/*.{ts,js}\" --ext .ts",
+    "format": "prettier --write \"src/**/*.{ts,js}\" \"*.html\" \"*.css\"",
+    "release": "echo \"Run: bump version, npm run build, git tag -a vX -m 'release' && git push --tags\""
   },
+  "keywords": [
+    "chess",
+    "local",
+    "typescript",
+    "game"
+  ],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.62.1",
+    "@typescript-eslint/parser": "^8.62.1",
     "esbuild": "^0.18.0",
+    "eslint": "^10.6.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
     "jsdom": "^29.1.1",
+    "prettier": "^3.9.4",
     "typescript": "^5.5.4",
     "vitest": "^1.0.0"
   }
